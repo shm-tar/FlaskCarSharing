@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Booking</title>
+    </head>
+    <body>>
+        <h1>Which car you want to book?</h1>
+        {% for car in cars %}
+            <form>
+            {{ car.autoName }} {{ car.autoModel }}<input type="submit" value="Book">
+            </form>
+        {% endfor %}
+
+    </body>
+</html>
+{% endblock %}

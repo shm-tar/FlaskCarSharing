@@ -7,6 +7,7 @@ database_file = "sqlite:///{}".format(os.path.join(project_dir, "cardatabase.db"
 
 app = Flask(__name__)
 app.config["SQLALCHEMY_DATABASE_URI"] = database_file
+SQLALCHEMY_TRACK_MODIFICATIONS = False
 
 db = SQLAlchemy(app)
 
@@ -48,6 +49,12 @@ def showlist():
         car = NewCar(autoName=request.form.get("name"), autoModel=request.form.get("model"), engine=request.form.get("engine"), passengers=request.form.get("passengers"))
         db.session.add(car)
         db.session.commit()
+    cars = NewCar.query.all()
+    return render_template("showList.html", cars=cars)
+
+
+@app.route('/booking')
+def booking():
     cars = NewCar.query.all()
     return render_template("showList.html", cars=cars)
 
