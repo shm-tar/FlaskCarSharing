@@ -1,38 +1,20 @@
 {% extends "base.html" %}
 
 {% block content %}
-<!DOCTYPE html>
-    <h1>Add a car</h1>
-    <form action="" method="post" novalidate>
-        {{ form.hidden_tag() }}
-        <p>
-            {{ form.autoName.label }}<br>
-            {{ form.autoName(size=32) }}
-            {% for error in form.autoName.errors %}
-            <span style="color: red">[{{ error }}]</span>
-            {% endfor %}
-        </p>
-        <p>
-            {{ form.autoModel.label }}<br>
-            {{ form.autoModel(size=32) }}
-            {% for error in form.autoModel.errors %}
-            <span style="color: red">[{{ error }}]</span>
-            {% endfor %}
-        </p>
-        <p>
-            {{ form.engine.label }}<br>
-            {{ form.engine(size=3) }}
-            {% for error in form.engine.errors %}
-            <span style="color: red">[{{ error }}]</span>
-            {% endfor %}
-        </p>
-        <p>
-            {{ form.passengers.label }}<br>
-            {{ form.passengers(size=2) }}
-            {% for error in form.passengers.errors %}
-            <span style="color: red">[{{ error }}]</span>
-            {% endfor %}
-        </p>
-        <p>{{ form.submit() }}</p>
-    </form>
+<html>
+    <body>
+        <h1>Add a car</h1>
+        <form method="POST" action="/showList">
+            Car Name<br>
+            <input type="text" name="name"><br>
+            Car Model<br>
+            <input type="text" name="model"><br>
+            Engine<br>
+            <input type="text" name="engine"><br>
+            Seats<br>
+            <input type="text" name="passengers"><br>
+            <input type="submit" value="Add"><br>
+        </form>
+    </body>
+</html>
 {% endblock %}
