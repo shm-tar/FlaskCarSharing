@@ -56,7 +56,11 @@ def showlist():
 @app.route('/booking')
 def booking():
     cars = NewCar.query.all()
-    return render_template("showList.html", cars=cars)
+    return render_template("booking.html", cars=cars)
+
+@app.route('/return')
+def done():
+    return render_template('return.html')
 
 
 if __name__ == '__main__':
