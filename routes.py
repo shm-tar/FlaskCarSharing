@@ -7,7 +7,6 @@ database_file = "sqlite:///{}".format(os.path.join(project_dir, "cardatabase.db"
 
 app = Flask(__name__)
 app.config["SQLALCHEMY_DATABASE_URI"] = database_file
-SQLALCHEMY_TRACK_MODIFICATIONS = False
 
 db = SQLAlchemy(app)
 
@@ -16,11 +15,19 @@ class NewCar(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     autoName = db.Column(db.String(120), index=True, unique=True)
     autoModel = db.Column(db.String(120), index=True, unique=True)
-    engine = db.Column(db.String(64), index=True, unique=True)
-    passengers = db.Column(db.String(64), index=True, unique=True)
+    engine = db.Column(db.String(64), index=True, unique=False)
+    passengers = db.Column(db.String(64), index=True, unique=False)
 
-    def __repr__(self):
-        return "<Car: {}>".format(self.autoName)
+
+@app.errorhandler(404)
+def not_found_error(error):
+    return render_template('404.html'), 404
+
+
+@app.errorhandler(500)
+def internal_error(error):
+    db.session.rollback()
+    return render_template('500.html'), 500
 
 
 @app.route('/')
@@ -46,7 +53,8 @@ def add():
 @app.route('/showList', methods=['GET', 'POST'])
 def showlist():
     if request.form:
-        car = NewCar(autoName=request.form.get("name"), autoModel=request.form.get("model"), engine=request.form.get("engine"), passengers=request.form.get("passengers"))
+        car = NewCar(autoName=request.form.get("name"), autoModel=request.form.get("model"),
+                     engine=request.form.get("engine"), passengers=request.form.get("passengers"))
         db.session.add(car)
         db.session.commit()
     cars = NewCar.query.all()
@@ -57,6 +65,7 @@ def showlist():
 def booking():
     cars = NewCar.query.all()
     return render_template("booking.html", cars=cars)
+
 
 @app.route('/return')
 def done():
