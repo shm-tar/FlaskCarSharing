@@ -1,12 +1,11 @@
 from routes import app, db
 import unittest, os
 
-TEST_DB = 'cardatabase.db'
-project_dir = os.path.dirname(os.path.abspath(__file__))
-
 
 class FlaskTest(unittest.TestCase):
     def setUp(self):
+        TEST_DB = 'test_cardatabase.db'
+        project_dir = os.path.dirname(os.path.abspath(__file__))
         app.config['TESTING'] = True
         app.config['WTF_CSRF_ENABLED'] = False
         app.config['DEBUG'] = False
@@ -19,6 +18,11 @@ class FlaskTest(unittest.TestCase):
     def tearDown(self):
         db.session.remove()
         db.drop_all()
+    """
+    def test_no_page(self):
+        response = self.app.get('/no')
+        self.assertEqual(response.status_code, 200)
+    """
 
     def test_main_page(self):
         response = self.app.get('/')

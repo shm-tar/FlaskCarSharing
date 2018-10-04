@@ -3,6 +3,7 @@ from flask import Flask, render_template, request
 from flask_sqlalchemy import SQLAlchemy
 
 project_dir = os.path.dirname(os.path.abspath(__file__))
+
 database_file = "sqlite:///{}".format(os.path.join(project_dir, "cardatabase.db"))
 
 app = Flask(__name__)
@@ -18,16 +19,8 @@ class NewCar(db.Model):
     engine = db.Column(db.String(64), index=True, unique=False)
     passengers = db.Column(db.String(64), index=True, unique=False)
 
-
-@app.errorhandler(404)
-def not_found_error(error):
-    return render_template('404.html'), 404
-
-
-@app.errorhandler(500)
-def internal_error(error):
-    db.session.rollback()
-    return render_template('500.html'), 500
+    def get_id(self):
+        return str(self.id)
 
 
 @app.route('/')
@@ -73,5 +66,4 @@ def done():
 
 
 if __name__ == '__main__':
-    db.create_all()
     app.run()
